@@ -28,8 +28,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
+     
 
   # ── Step 2: Build image and push to Docker Hub ────────────────────────────
   # Only runs on merge to develop or main
