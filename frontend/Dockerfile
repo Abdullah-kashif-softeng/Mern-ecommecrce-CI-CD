@@ -4,19 +4,16 @@ WORKDIR /app
 
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm ci --only=production
+RUN npm ci                  # remove --only=production so devDeps are installed
 
 COPY . .
 
 RUN npm run build
 
-FROM node:22.12.0-alpine AS runner
+FROM node:18-alpine AS runner
 WORKDIR /app
-COPY --from=builder /build/dist ./dist
-COPY --from=builder /build/node_modules ./node_modules
-COPY --from=builder /build/package*.json ./
+COPY --from=builder /app/dist ./dist          
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
 EXPOSE 3000
 CMD ["node", "dist/index.js"]
-
-
-
